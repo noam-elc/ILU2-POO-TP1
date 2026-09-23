@@ -9,24 +9,6 @@ public class Etal {
 	private int quantite;
 	private boolean etalOccupe = false;
 
-	private class Marche {
-		private Etal[] etals;
-		private int nbEtals = 0;
-
-		public Marche(int nbEtalsMax) {
-			etals = new Etal[nbEtalsMax];
-		}
-
-		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
-			if (isEtalOccupe()) {
-				System.out.println("Cet étal est déjà occupé par un autre villageois !");
-			}
-			else {
-				// etal.
-			}
-		}
-	}
-
 	public boolean isEtalOccupe() {
 		return etalOccupe;
 	}
