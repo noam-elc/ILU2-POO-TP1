@@ -40,6 +40,49 @@ public class Village {
 			return resultat;
 		}
 
+		public Etal[] trouverEtals(String produits) {
+			int nb_etals_vendant_produits = 0;
+			for (int i = 0; i < etals.length; i++) {
+				if (etals[i].contientProduit(produits))
+					nb_etals_vendant_produits++;
+			}
+			Etal[] etals_vendant_produits = new Etal[nb_etals_vendant_produits];
+			int indice_parcours_tableau = 0;
+			for (int j = 0; j < etals.length; j++) {
+				if (etals[j].contientProduit(produits))
+					etals_vendant_produits[indice_parcours_tableau] = etals[j];
+			}
+			return etals_vendant_produits;
+		}
+
+		public Etal trouverVendeur(Gaulois gaulois) {
+			Etal trouver_gaulois_vendeur = null;
+			for (int i = 0; i < etals.length; i++) {
+				if (etals[i].getVendeur() == gaulois)
+					trouver_gaulois_vendeur = etals[i];
+			}
+			return trouver_gaulois_vendeur;
+		}
+
+		public String afficherMarche() {
+			StringBuilder chaine = new StringBuilder();
+			int nb_etals_libres = 0;
+			if (etals.length == 0) {
+				chaine.append("Il n'y a aucun étal dans le marché.\n");
+			} else {
+				chaine.append("Dans le village, il y a :\n");
+				for (int i = 0; i < etals.length; i++) {
+					if (etals[i].isEtalOccupe()) {
+						chaine.append(etals[i].afficherEtal());
+					} else {
+						nb_etals_libres++;
+					}
+				}
+
+			}
+			chaine.append("Il reste " + nb_etals_libres + " étals non utilisés dans le marché.\n");
+			return chaine.toString();
+		}
 	}
 
 	public String getNom() {
