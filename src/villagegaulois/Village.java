@@ -8,22 +8,24 @@ public class Village {
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
+	private Marche marche;
 
-	public Village(String nom, int nbVillageoisMaximum) {
+	public Village(String nom, int nbVillageoisMaximum, int nbEtals) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
+		marche = new Marche(nbEtals);
 	}
 
 	private class Marche {
 		private Etal[] etals;
 
-		public Marche(int nbEtalsMax) {
+		private Marche(int nbEtalsMax) {
 			etals = new Etal[nbEtalsMax];
 			for (int i = 0; i < nbEtalsMax; i++)
 				etals[i] = new Etal();
 		}
 
-		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
+		private void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
 			if (etals[indiceEtal].isEtalOccupe()) {
 				System.out.println("Cet étal est déjà occupé par un autre villageois !");
 			} else {
@@ -31,7 +33,7 @@ public class Village {
 			}
 		}
 
-		public int trouverEtalLibre() {
+		private int trouverEtalLibre() {
 			int resultat = -1;
 			for (int i = 0; i < etals.length; i++) {
 				if (!etals[i].isEtalOccupe())
@@ -40,7 +42,7 @@ public class Village {
 			return resultat;
 		}
 
-		public Etal[] trouverEtals(String produits) {
+		private Etal[] trouverEtals(String produits) {
 			int nb_etals_vendant_produits = 0;
 			for (int i = 0; i < etals.length; i++) {
 				if (etals[i].contientProduit(produits))
@@ -55,7 +57,7 @@ public class Village {
 			return etals_vendant_produits;
 		}
 
-		public Etal trouverVendeur(Gaulois gaulois) {
+		private Etal trouverVendeur(Gaulois gaulois) {
 			Etal trouver_gaulois_vendeur = null;
 			for (int i = 0; i < etals.length; i++) {
 				if (etals[i].getVendeur() == gaulois)
@@ -64,7 +66,7 @@ public class Village {
 			return trouver_gaulois_vendeur;
 		}
 
-		public String afficherMarche() {
+		private String afficherMarche() {
 			StringBuilder chaine = new StringBuilder();
 			int nb_etals_libres = 0;
 			if (etals.length == 0) {
@@ -121,6 +123,20 @@ public class Village {
 			chaine.append("Au village du chef " + chef.getNom() + " vivent les légendaires gaulois :\n");
 			for (int i = 0; i < nbVillageois; i++) {
 				chaine.append("- " + villageois[i].getNom() + "\n");
+			}
+		}
+		return chaine.toString();
+	}
+
+	public String rechercherVendeursProduit(String nomProduit) {
+		StringBuilder chaine = new StringBuilder();
+		for (int i=0; i<marche.etals.length; i++) {
+			if (marche.trouverEtals(nomProduit).length == 0 ) {
+				chaine.append("Il n'y a pas de vendeur qui propose de " + nomProduit + " au marché.");
+			} else if (marche.trouverEtals(nomProduit).length == 1) {
+				Etal[] obtenir_villageois = marche.trouverEtals(nomProduit);
+				chaine.append("Seul le vendeur " + obtenir_villageois[1].getVendeur() + " propose des " + nomProduit + " au marché.");
+				
 			}
 		}
 		return chaine.toString();
